@@ -23,15 +23,18 @@ public class SerwerWynikow {
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
         // read the list of messages from the socket
-		List<Gracz> listaGraczy = (List<Gracz>) objectInputStream.readObject();
-        System.out.println("Received [" + listaGraczy.size() + "] messages from: " + socket);
+		//List<Gracz> listaGraczy = (List<Gracz>) objectInputStream.readObject();
+        Gracz gracz = (Gracz) objectInputStream.readObject();
+        System.out.println("Received messages from: " + socket);
         // print out the text of every message
         System.out.println("All messages:");
         
+        System.out.println("-----------------------serwer printuje :" + gracz.toString());
+        /*
 		for (Gracz gracz : listaGraczy) {
 			System.out.println("-----------------------serwer printuje :" + gracz.toString());
 		}
-        
+        */
 
         System.out.println("Closing sockets.");
         ss.close();
