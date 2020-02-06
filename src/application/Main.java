@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -22,12 +23,13 @@ import javafx.util.Duration;
 
 public class Main extends Application {
 
+	private static final int SZEROKOSC_SCENY = 400;
 	private static final int WYSOKOSC_SCENY = 600;
 	private static final int WYSOKOSC_KOSZYKA = 50;
 	private static final int SZEROKOSC_KOSZYKA = 70;
 	private static final int GRANICA_SPADANIA = WYSOKOSC_SCENY-WYSOKOSC_KOSZYKA;
 	AnimationTimer timer;
-	Pane root = new Pane();
+	Pane pane = new Pane();
 	List<Circle> jajka = new ArrayList<>();
 	int totalIloscJajek = 0;
 	double mouseX;
@@ -58,7 +60,7 @@ public class Main extends Application {
 			predkoscSpadania += interwalTworzeniaJajka / 4000;
 			Circle circle = stworzNoweJajko();
 			jajka.add(circle);
-			root.getChildren().add(circle);
+			pane.getChildren().add(circle);
 			System.out.println("dodalem jajko");
 		}));
 
@@ -82,15 +84,22 @@ public class Main extends Application {
 
 		koszyk = stworzNowyKoszyk();
 
-		root.getChildren().addAll(koszyk, lblUpuszczone);
+		pane.getChildren().addAll(koszyk, lblUpuszczone);
 
-		Scene scene = new Scene(root, 400, WYSOKOSC_SCENY);
+		Scene scene = new Scene(pane, SZEROKOSC_SCENY, WYSOKOSC_SCENY);
 
 		scene.setOnMouseMoved(e -> {
 			mouseX = e.getX();
 			//System.out.println("Wpolrzedna X myszy: " + mouseX + " " + Thread.currentThread().getName());
 		});
-
+		
+		Button btnLogowanie = new Button("Podaj Imię");
+		
+		btnLogowanie.setLayoutX(SZEROKOSC_SCENY-100);
+		btnLogowanie.setLayoutY(0);
+		pane.getChildren().add(btnLogowanie);
+		btnLogowanie.setOnAction(event-> new MenuLogowanie());
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
@@ -98,7 +107,7 @@ public class Main extends Application {
 
 	public Circle stworzNoweJajko() {
 		Circle jajko = new Circle();
-		jajko.setLayoutX(rand(0, 400));
+		jajko.setLayoutX(rand(0, SZEROKOSC_SCENY));
 		jajko.setLayoutY(1);
 		jajko.setRadius(6);
 		jajko.setFill(Color.BLUE);
@@ -107,7 +116,7 @@ public class Main extends Application {
 
 	public Rectangle stworzNowyKoszyk() {
 		Rectangle koszyk = new Rectangle();
-		koszyk.setLayoutX(200);
+		koszyk.setLayoutX(SZEROKOSC_SCENY/2);
 		koszyk.setLayoutY(WYSOKOSC_SCENY-WYSOKOSC_KOSZYKA);
 		koszyk.setHeight(WYSOKOSC_KOSZYKA);
 		koszyk.setWidth(SZEROKOSC_KOSZYKA);
@@ -131,7 +140,7 @@ public class Main extends Application {
 			jajko.setLayoutY(jajko.getLayoutY() + predkoscSpadania );
 			// if gdy wpada do koszyka
 			if (jestZlapane(jajko)	) {
-				root.getChildren().remove( jajko);
+				pane.getChildren().remove( jajko);
 				jajka.remove(i);
 				System.out.println("-------------zlapane jajko");
 				sprawdzCzyKoniec();
@@ -139,7 +148,7 @@ public class Main extends Application {
 
 			// if omija koszyk , upuszczone
 			else if ( jestUpuszczone(jajko) ) {
-				root.getChildren().remove( jajko);
+				pane.getChildren().remove( jajko);
 				jajka.remove(i);
 				upuszczone ++;
 				lblUpuszczone.setFont(Font.font ("Verdana", 20));
