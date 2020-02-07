@@ -66,7 +66,7 @@ public class Main extends Application {
 
 		//ilosc wypuszczonych jajek
 		timeline.setCycleCount(10);
-		timeline.play();
+		//timeline.play();
 		
 		timer = new AnimationTimer() {
 
@@ -94,17 +94,23 @@ public class Main extends Application {
 		});
 		
 		Button btnLogowanie = new Button("Podaj Imię");
-		
 		btnLogowanie.setLayoutX(SZEROKOSC_SCENY-100);
-		btnLogowanie.setLayoutY(0);
+		btnLogowanie.setLayoutY(10);
 		pane.getChildren().add(btnLogowanie);
 		btnLogowanie.setOnAction(event-> new MenuLogowanie());
+		
+		Button btnStart = new Button("Uruchom Gre");
+		btnStart.setLayoutX(SZEROKOSC_SCENY-100);
+		btnStart.setLayoutY(50);
+		pane.getChildren().add(btnStart);
+		btnStart.setOnAction(event-> timeline.play());
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
 	}
 
+	
 	public Circle stworzNoweJajko() {
 		Circle jajko = new Circle();
 		jajko.setLayoutX(rand(0, SZEROKOSC_SCENY));
@@ -168,10 +174,10 @@ public class Main extends Application {
 			timer.stop();
 			System.out.println("Koniec!");
 			//graficznie zapytaj o imie
-			Gracz gracz = new Gracz("xxxx", totalIloscJajek-upuszczone);
+			Gracz gracz1 = new Gracz("gracz 1" , totalIloscJajek-upuszczone);
 			PolaczenieDoSerwera polaczenieDoSerwera = new PolaczenieDoSerwera();
 			try {
-				polaczenieDoSerwera.wyslijWynik(gracz);
+				polaczenieDoSerwera.wyslijWynik(gracz1);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

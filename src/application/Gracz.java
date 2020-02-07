@@ -12,6 +12,10 @@ public class Gracz implements Serializable {
 		this.wynik = wynik;
 	}
 
+	public Gracz(String nazwaGracza) {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public String toString() {
 		return "Gracz [imie=" + imie + ", wynik=" + wynik + "]";
