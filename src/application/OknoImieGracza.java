@@ -13,14 +13,14 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MenuLogowanie {
+public class OknoImieGracza {
     private String nazwaGracza = new String("");
     
 	public String getNazwaGracza() {
 		return nazwaGracza;
 	}
 
-	public MenuLogowanie()    {
+	public OknoImieGracza()    {
         Stage subStage = new Stage();
         subStage.setTitle("logowanie");
         

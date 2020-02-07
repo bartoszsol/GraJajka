@@ -97,7 +97,7 @@ public class Main extends Application {
 		btnLogowanie.setLayoutX(SZEROKOSC_SCENY-100);
 		btnLogowanie.setLayoutY(10);
 		pane.getChildren().add(btnLogowanie);
-		btnLogowanie.setOnAction(event-> new MenuLogowanie());
+		btnLogowanie.setOnAction(event-> new OknoImieGracza());
 		
 		Button btnStart = new Button("Uruchom Gre");
 		btnStart.setLayoutX(SZEROKOSC_SCENY-100);
@@ -174,7 +174,9 @@ public class Main extends Application {
 			timer.stop();
 			System.out.println("Koniec!");
 			//graficznie zapytaj o imie
-			Gracz gracz1 = new Gracz("gracz 1" , totalIloscJajek-upuszczone);
+			//OknoImieGracza oknoImieGracza = new OknoImieGracza();
+			//Gracz gracz1 = new Gracz(oknoImieGracza.getNazwaGracza() , totalIloscJajek-upuszczone);
+			Gracz gracz1 = new Gracz("imieGracza-Bartek" , totalIloscJajek-upuszczone);
 			PolaczenieDoSerwera polaczenieDoSerwera = new PolaczenieDoSerwera();
 			try {
 				polaczenieDoSerwera.wyslijWynik(gracz1);
