@@ -5,40 +5,45 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SerwerWynikow {
 
+	
+
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
-        // don't need to specify a hostname, it will be the current machine
-        ServerSocket ss = new ServerSocket(7777);
-        System.out.println("ServerSocket awaiting connections...");
-        Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
-        System.out.println("Connection from " + socket + "!");
+		ArrayList<Gracz> listaGraczy = new ArrayList<>();
+		int i = 0;
+		
+		ServerSocket ss = new ServerSocket(7777);
+		System.out.println("Serwer oczkeuje na polaczenie ...");
 
-        // get the input stream from the connected socket
-        InputStream inputStream = socket.getInputStream();
-        // create a DataInputStream so we can read data from it.
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+		while (true) {
+			Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+			System.out.println("Polaczenie z  " + socket + "!");
 
-        // read the list of messages from the socket
-		//List<Gracz> listaGraczy = (List<Gracz>) objectInputStream.readObject();
-        Gracz gracz = (Gracz) objectInputStream.readObject();
-        System.out.println("Received messages from: " + socket);
-        // print out the text of every message
-        System.out.println("All messages:");
-        
-        System.out.println("-----------------------serwer printuje :" + gracz.toString());
-        /*
-		for (Gracz gracz : listaGraczy) {
-			System.out.println("-----------------------serwer printuje :" + gracz.toString());
+			// get the input stream from the connected socket
+			InputStream inputStream = socket.getInputStream();
+			// create a DataInputStream so we can read data from it.
+			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+			Gracz gracz = (Gracz) objectInputStream.readObject();
+			listaGraczy.add(gracz);
+			System.out.println("Otrzymana wiadomosc od : " + socket);
+			System.out.println("-------------------------------------------------------------------- Aktualna Lista Graczy :");
+
+			//System.out.println("-----------------------serwer printuje :" + gracz.toString());
+			i++;
+			
+			for (Gracz graczIt : listaGraczy) {
+			System.out.println("-------------------------------------------------------------------  serwer printuje :" +	graczIt.toString()); }
+			
 		}
-        */
-
-        System.out.println("Closing sockets.");
-        ss.close();
-        socket.close();
+//        System.out.println("Zamykam  sockety.");
+//        ss.close();
+//        socket.close();
 
 	}
 }

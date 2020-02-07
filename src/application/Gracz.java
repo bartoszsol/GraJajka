@@ -16,6 +16,14 @@ public class Gracz implements Serializable {
 		this.imie = nazwaGracza;
 	}
 
+	public int getWynik() {
+		return wynik;
+	}
+
+	public void setWynik(int wynik) {
+		this.wynik = wynik;
+	}
+
 	@Override
 	public String toString() {
 		return "Gracz [imie=" + imie + ", wynik=" + wynik + "]";

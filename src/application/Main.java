@@ -181,27 +181,41 @@ public class Main extends Application {
 		}
     }
 
+//	private void pokazDialogWyslijWynik() {
+//		TextInputDialog dialog = new TextInputDialog("Gracz1");
+//		dialog.setTitle("Zapisz wynik");
+//		dialog.setHeaderText("Podaj nazwę gracza");
+//		dialog.setContentText("Podaj nazwę:");
+//		Optional<String> nazwaGraczaOptional = dialog.showAndWait();
+//		if (nazwaGraczaOptional.isPresent()) {
+//			Gracz gracz1 = new Gracz(nazwaGraczaOptional.get(), totalIloscJajek - upuszczone);
+//			PolaczenieDoSerwera polaczenieDoSerwera = new PolaczenieDoSerwera();
+//			try {
+//				polaczenieDoSerwera.wyslijWynik(gracz);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		} else {
+//			//gracz nie zamknął okna, nie zapisze sie nic
+//		}
+//		totalIloscJajek=0;
+//		upuszczone = 0;
+//	}
+	
+
 	private void pokazDialogWyslijWynik() {
-		TextInputDialog dialog = new TextInputDialog("Gracz1");
-		dialog.setTitle("Zapisz wynik");
-		dialog.setHeaderText("Podaj nazwę gracza");
-		dialog.setContentText("Podaj nazwę:");
-		Optional<String> nazwaGraczaOptional = dialog.showAndWait();
-		if (nazwaGraczaOptional.isPresent()) {
-			Gracz gracz1 = new Gracz(nazwaGraczaOptional.get(), totalIloscJajek - upuszczone);
 			PolaczenieDoSerwera polaczenieDoSerwera = new PolaczenieDoSerwera();
 			try {
+				gracz.setWynik(totalIloscJajek - upuszczone);
 				polaczenieDoSerwera.wyslijWynik(gracz);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else {
-			//gracz nie zamknął okna, nie zapisze sie nic
-		}
 		totalIloscJajek=0;
 		upuszczone = 0;
 	}
 
+	
 	private boolean jestUpuszczone(Circle jajko) {
 		return jajko.getLayoutY() > GRANICA_SPADANIA+WYSOKOSC_KOSZYKA;
 	}
