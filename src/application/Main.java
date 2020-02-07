@@ -177,6 +177,7 @@ public class Main extends Application {
             System.out.println("Koniec!");
             //bez Platform.runLater nie zadziala, bo nie mozna blokowac w animacji (jakis wyjatek leci, nie znam sie na tym:))
 			Platform.runLater(() -> pokazDialogWyslijWynik());
+			
 		}
     }
 
@@ -197,6 +198,8 @@ public class Main extends Application {
 		} else {
 			//gracz nie zamknął okna, nie zapisze sie nic
 		}
+		totalIloscJajek=0;
+		upuszczone = 0;
 	}
 
 	private boolean jestUpuszczone(Circle jajko) {
