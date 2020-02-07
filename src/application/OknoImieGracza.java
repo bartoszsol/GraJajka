@@ -15,14 +15,12 @@ import javafx.stage.Stage;
 
 public class OknoImieGracza {
     private String nazwaGracza = new String("");
+    private Gracz gracz;
     
-	public String getNazwaGracza() {
-		return nazwaGracza;
-	}
-
-	public OknoImieGracza()    {
+	public OknoImieGracza(Gracz gracz)    {
+		this.gracz = gracz;
         Stage subStage = new Stage();
-        subStage.setTitle("logowanie");
+        subStage.setTitle("Nadaj imie ");
         
         Group root = new Group();
         Group root2 = new Group();
@@ -49,19 +47,21 @@ public class OknoImieGracza {
         txtField.setLayoutY(43);
 
 
-        Button btn = new Button("Login");
+        Button btn = new Button("Zapamietaj ");
         btn.setLayoutX(210);
         btn.setLayoutY(130);
         btn.setMaxHeight(200);
         btn.setMinWidth(280);
         btn.setOnAction(event -> {
                   nazwaGracza = txtField.getText();
-                  Gracz gracz = new Gracz(nazwaGracza); });
+                  gracz.imie = nazwaGracza; 
+                  System.out.println("wprowadzone imie gracza : " + nazwaGracza);
+                  System.out.println(gracz.toString());});
         
         root.getChildren().add(rectangle);
         root.getChildren().add(txt1);
         root.getChildren().add(txtField);
-        //root.getChildren().add(btn);
+        root.getChildren().add(btn);
         
 
         

@@ -13,7 +13,7 @@ public class Gracz implements Serializable {
 	}
 
 	public Gracz(String nazwaGracza) {
-		// TODO Auto-generated constructor stub
+		this.imie = nazwaGracza;
 	}
 
 	@Override

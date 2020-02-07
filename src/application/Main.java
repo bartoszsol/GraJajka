@@ -3,16 +3,19 @@ package application;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -28,6 +31,7 @@ public class Main extends Application {
 	private static final int WYSOKOSC_KOSZYKA = 50;
 	private static final int SZEROKOSC_KOSZYKA = 70;
 	private static final int GRANICA_SPADANIA = WYSOKOSC_SCENY-WYSOKOSC_KOSZYKA;
+	Gracz gracz = new Gracz("");
 	AnimationTimer timer;
 	Pane pane = new Pane();
 	List<Circle> jajka = new ArrayList<>();
@@ -66,8 +70,7 @@ public class Main extends Application {
 
 		//ilosc wypuszczonych jajek
 		timeline.setCycleCount(10);
-		//timeline.play();
-		
+	
 		timer = new AnimationTimer() {
 
 			@Override
@@ -76,12 +79,7 @@ public class Main extends Application {
 //				koszyk.setLayoutX(mouseX);
 			}
 		};
-		
-		timer.start();
 	
-	
-		
-
 		koszyk = stworzNowyKoszyk();
 
 		pane.getChildren().addAll(koszyk, lblUpuszczone);
@@ -97,13 +95,17 @@ public class Main extends Application {
 		btnLogowanie.setLayoutX(SZEROKOSC_SCENY-100);
 		btnLogowanie.setLayoutY(10);
 		pane.getChildren().add(btnLogowanie);
-		btnLogowanie.setOnAction(event-> new OknoImieGracza());
+		btnLogowanie.setOnAction(event-> new OknoImieGracza(gracz));
 		
 		Button btnStart = new Button("Uruchom Gre");
 		btnStart.setLayoutX(SZEROKOSC_SCENY-100);
 		btnStart.setLayoutY(50);
 		pane.getChildren().add(btnStart);
-		btnStart.setOnAction(event-> timeline.play());
+		btnStart.setOnAction(event-> { 
+		timeline.playFromStart();
+		 	
+		timer.start();
+		});
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -169,23 +171,32 @@ public class Main extends Application {
 	}
 
 	private void sprawdzCzyKoniec() {
-		totalIloscJajek++;
-		if(totalIloscJajek == 10) {
-			timer.stop();
-			System.out.println("Koniec!");
-			//graficznie zapytaj o imie
-			//OknoImieGracza oknoImieGracza = new OknoImieGracza();
-			//Gracz gracz1 = new Gracz(oknoImieGracza.getNazwaGracza() , totalIloscJajek-upuszczone);
-			Gracz gracz1 = new Gracz("imieGracza-Bartek" , totalIloscJajek-upuszczone);
+        totalIloscJajek++;
+        if (totalIloscJajek == 10) {
+            timer.stop();
+            System.out.println("Koniec!");
+            //bez Platform.runLater nie zadziala, bo nie mozna blokowac w animacji (jakis wyjatek leci, nie znam sie na tym:))
+			Platform.runLater(() -> pokazDialogWyslijWynik());
+		}
+    }
+
+	private void pokazDialogWyslijWynik() {
+		TextInputDialog dialog = new TextInputDialog("Gracz1");
+		dialog.setTitle("Zapisz wynik");
+		dialog.setHeaderText("Podaj nazwę gracza");
+		dialog.setContentText("Podaj nazwę:");
+		Optional<String> nazwaGraczaOptional = dialog.showAndWait();
+		if (nazwaGraczaOptional.isPresent()) {
+			Gracz gracz1 = new Gracz(nazwaGraczaOptional.get(), totalIloscJajek - upuszczone);
 			PolaczenieDoSerwera polaczenieDoSerwera = new PolaczenieDoSerwera();
 			try {
-				polaczenieDoSerwera.wyslijWynik(gracz1);
+				polaczenieDoSerwera.wyslijWynik(gracz);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else {
+			//gracz nie zamknął okna, nie zapisze sie nic
 		}
-		
 	}
 
 	private boolean jestUpuszczone(Circle jajko) {
